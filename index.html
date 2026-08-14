@@ -25,7 +25,6 @@
 
   a{color:inherit;text-decoration:none}
 
-  /* Return button */
   .return {
     position:fixed;
     left:20px;
@@ -42,7 +41,6 @@
   }
   .return:hover{transform:translateY(-3px);background:rgba(255,255,255,0.09)}
 
-  /* Intro */
   .hero {
     height:100vh;
     display:flex;
@@ -50,13 +48,15 @@
     justify-content:center;
     position:relative;
     overflow:hidden;
-    background:linear-gradient(180deg, rgba(5,5,7,0.6), rgba(2,2,3,0.9));
+    background:radial-gradient(circle at 30% 20%, #202030 0, #050507 55%, #000000 100%);
   }
 
   .hero-map {
     position:absolute;
     inset:0;
-    background:url('map.png') center/cover no-repeat;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.06) 0, transparent 55%),
+      url('map.png') center/cover no-repeat;
     filter:grayscale(.2) contrast(.9) brightness(.45);
     transform:scale(1.02);
     z-index:0;
@@ -124,23 +124,6 @@
     line-height:1.6;
   }
 
-  .hero-cta {
-    margin-top:26px;
-  }
-
-  .cta {
-    padding:10px 16px;
-    border-radius:8px;
-    background:linear-gradient(180deg,var(--accent), #8c0000);
-    color:white;
-    font-weight:700;
-    font-size:13px;
-    border:0;
-    cursor:pointer;
-    box-shadow:0 8px 30px rgba(179,0,0,0.18);
-  }
-
-  /* Sticky map stage */
   .map-stage {
     max-width:1200px;
     margin:0 auto;
@@ -165,11 +148,12 @@
     position:relative;
     width:100%;
     height:100%;
-    background:url('map.png') center/cover no-repeat;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.06) 0, transparent 55%),
+      url('map.png') center/cover no-repeat;
     filter:grayscale(.2) contrast(.9) brightness(.35);
   }
 
-  /* Hotspots */
   .hotspot {
     position:absolute;
     width:18px;
@@ -183,7 +167,6 @@
   }
   .hotspot:hover{transform:translate(-50%,-50%) scale(1.1)}
 
-  /* Info panels */
   .info-panel {
     background:var(--panel);
     border:1px solid rgba(255,255,255,0.06);
@@ -204,7 +187,6 @@
   .info-panel h3{margin:0 0 8px;font-size:18px;color:#fff}
   .info-panel p{margin:0;color:var(--muted);line-height:1.6;font-size:15px}
 
-  /* Article */
   .article {
     max-width:900px;
     margin:80px auto;
@@ -222,11 +204,18 @@
     margin-bottom:20px;
   }
 
+  .article h3 {
+    font-family:Georgia, serif;
+    font-size:22px;
+    margin-top:30px;
+    margin-bottom:10px;
+  }
+
   .article p {
     font-size:17px;
     line-height:1.7;
     color:#d0d0d0;
-    margin-bottom:22px;
+    margin-bottom:18px;
   }
 
   .article-img {
@@ -234,7 +223,7 @@
     height:300px;
     background:#111 center/cover no-repeat;
     border-radius:10px;
-    margin:30px 0;
+    margin:24px 0;
   }
 
   .kc-logo {
@@ -315,19 +304,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <div class="sticky-map">
     <div class="world-map">
-
-      <!-- Hotspots -->
       <div class="hotspot" style="left:72%; top:58%;" data-key="uae"></div>
       <div class="hotspot" style="left:60%; top:46%;" data-key="offshore"></div>
       <div class="hotspot" style="left:92%; top:74%;" data-key="wallets"></div>
       <div class="hotspot" style="left:70%; top:62%;" data-key="uae"></div>
       <div class="hotspot" style="left:58%; top:40%;" data-key="offshore"></div>
-
     </div>
   </div>
 
   <div>
-
     <div class="info-panel" id="panel-uae">
       <h3>Kessler Corp — UAE Headquarters</h3>
       <p>
@@ -359,46 +344,87 @@ document.addEventListener("DOMContentLoaded", () => {
         Corporate filings ceased, wallet activity dropped to zero, and several subsidiaries dissolved quietly.
       </p>
     </div>
-
   </div>
 
 </section>
 
 <section class="article">
 
-  <h2>The Man Behind the Network</h2>
+  <h2>The Man, the Network, the Vanishing</h2>
 
   <div class="article-img" style="background-image:url('kessler-1.png');"></div>
 
+  <h3>1. The Constructed Identity</h3>
   <p>
-    Shlomi Kessler’s rise in the Middle Eastern fintech ecosystem was as rapid as it was opaque.
-    His nationality remains disputed — some records list him as Iranian, others Israeli — and several offshore filings
-    omit nationality entirely. What is clear is that by 2020, he had positioned himself at the center of a growing
-    cross-border digital finance network.
+    On paper, Shlomi Kessler was a visionary technologist. In practice, he was a carefully engineered mystery.
+    Internal documents obtained by sources close to the Dubai Free Zone Authority show conflicting nationality entries:
+    one filing lists him as Iranian, another as Israeli, and a third omits nationality entirely.  
+    Former compliance officer <strong>Leila Darwish</strong>, who briefly worked with a Kessler-linked entity, recalls
+    “a man who never answered a question directly — especially if it involved where he came from.”
   </p>
 
+  <h3>2. The Inner Circle</h3>
   <p>
-    Kessler Corp, headquartered in Dubai, marketed itself as a “digital infrastructure provider” capable of routing
-    assets across borders with unprecedented speed. The company’s internal structure, however, told a more complex story:
-    subsidiaries appearing and dissolving within months, nominee directors with no digital footprint, and wallet clusters
-    engaging in circular transfers across multiple jurisdictions.
+    Kessler rarely appeared alone. At private fintech gatherings, he was flanked by two recurring figures:
+    <strong>Markus Hale</strong>, introduced as a “strategic advisor,” and <strong>Rafi Ben-Ami</strong>, described only as
+    “operations.” Neither man appears in official Kessler Corp filings, yet both names surface in email headers and
+    travel manifests tied to the company’s expansion into Cyprus and Singapore.  
+    A former investor, <strong>Dr. Noura El-Sayed</strong>, claims Hale handled “the money that never wanted to be seen,”
+    while Ben-Ami “made sure no one asked the wrong questions twice.”
   </p>
 
   <div class="article-img" style="background-image:url('kessler-2.png');"></div>
 
+  <h3>3. The Shell Architecture</h3>
   <p>
-    By early 2026, Kessler’s behavior had shifted. Witnesses described him as increasingly guarded, accompanied by
-    unidentified advisors, and reluctant to speak publicly. His final confirmed appearance was at a private meeting
-    in Abu Dhabi. Within days, he vanished — leaving behind a fragmented corporate network, unanswered questions,
-    and a digital trail that investigators continue to unravel.
+    Behind the polished branding of Kessler Corp lay a lattice of shell companies:  
+    <strong>Meridian Gate Holdings</strong> in Cyprus, <strong>Sandline Digital Ventures</strong> in Malta,
+    and <strong>Albedo Routing Systems</strong> in Ras Al Khaimah. Each entity existed just long enough to receive
+    and redistribute large transfers before being quietly dissolved.  
+    Corporate service provider <strong>Johan Petrovic</strong>, who handled paperwork for Meridian Gate, describes
+    “board members who never showed up, signatures that arrived by courier, and instructions that always came from
+    someone who refused video calls.”
+  </p>
+
+  <h3>4. The Wallet Choreography</h3>
+  <p>
+    Blockchain analysts at the independent firm <strong>VectorTrace Labs</strong> mapped a constellation of wallets
+    linked to Kessler Corp and its satellites. The pattern was theatrical: funds looping between the same clusters,
+    splitting into dozens of smaller addresses, then converging on exchanges with notoriously light KYC.  
+    Lead analyst <strong>Amira Kovacs</strong> calls it “a dance designed to be watched but never fully understood —
+    every move just clear enough to look legitimate, and just complex enough to resist simple explanation.”
+  </p>
+
+  <h3>5. The Meeting in Abu Dhabi</h3>
+  <p>
+    In February 2026, Kessler attended a closed-door session at the <strong>Al Noor Capital Forum</strong> in Abu Dhabi.
+    Attendees included regional fund managers, a delegation from a European private bank, and a small group of
+    unlisted “strategic partners.”  
+    According to one participant, <strong>Hassan Al-Mutairi</strong>, Kessler arrived late, spoke in sweeping terms
+    about “a final consolidation phase,” and left before the session ended. “He looked like a man who had already
+    decided to disappear,” Al-Mutairi says. “The meeting felt less like a pitch and more like a goodbye.”
+  </p>
+
+  <h3>6. The Silence That Followed</h3>
+  <p>
+    Within weeks, filings for Meridian Gate Holdings and Sandline Digital Ventures were withdrawn.
+    Albedo Routing Systems listed “strategic restructuring” before vanishing from public registries.
+    Wallet activity tied to Kessler’s known clusters dropped to near zero.  
+    Hale and Ben-Ami stopped responding to messages. Darwish, Petrovic, Kovacs, and El-Sayed each describe
+    the same sensation: “It was like someone turned off the lights in a building you didn’t realize you were inside.”
   </p>
 
   <div class="kc-logo">KC</div>
 
+  <h3>7. What Remains</h3>
   <p>
-    Today, Kessler Corp remains operational but significantly downsized. Its leadership has not commented on Kessler’s
-    whereabouts. The unanswered questions surrounding his financial network and disappearance continue to fuel speculation
-    across the region’s fintech community.
+    Today, a reduced version of Kessler Corp still exists on paper in Dubai — a skeleton of a once-ambitious empire.
+    Its current directors issue brief, carefully worded statements about “ongoing restructuring” and “strategic review.”
+    None will answer direct questions about Kessler’s location, the fate of his inner circle, or the true purpose of
+    the shell architecture that once surrounded him.  
+    The map, the wallets, the dissolved entities, and the people who briefly orbited his world now form a single,
+    unresolved question: was Shlomi Kessler building a future he lost control of — or dismantling a system before
+    someone else could?
   </p>
 
 </section>
