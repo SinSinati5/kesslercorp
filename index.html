@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,9 +22,41 @@
     color:#e9e9e9;
     font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     overflow-x:hidden;
+    position:relative;
   }
 
   a{color:inherit;text-decoration:none}
+
+  /* MOVING RANDOM LINES BACKGROUND */
+  .lines-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    overflow:hidden;
+  }
+  .line{
+    position:absolute;
+    width:1px;
+    height:180px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0));
+    opacity:0.25;
+    animation:lineMove 18s linear infinite;
+  }
+  .line:nth-child(2){height:220px; left:15%; animation-duration:22s; animation-delay:-4s;}
+  .line:nth-child(3){height:260px; left:32%; animation-duration:26s; animation-delay:-8s;}
+  .line:nth-child(4){height:200px; left:48%; animation-duration:20s; animation-delay:-2s;}
+  .line:nth-child(5){height:240px; left:63%; animation-duration:24s; animation-delay:-10s;}
+  .line:nth-child(6){height:210px; left:78%; animation-duration:21s; animation-delay:-6s;}
+  .line:nth-child(7){height:230px; left:90%; animation-duration:23s; animation-delay:-12s;}
+
+  @keyframes lineMove{
+    0%{top:-260px; transform:translateX(0);}
+    25%{transform:translateX(-8px);}
+    50%{transform:translateX(6px);}
+    75%{transform:translateX(-4px);}
+    100%{top:110%; transform:translateX(0);}
+  }
 
   .return {
     position:fixed;
@@ -224,19 +257,6 @@
     margin:40px 0;
   }
 
-  /* SCATTERED GRAPHICS */
-  .graphic {
-    width:100%;
-    height:260px;
-    background:#0d0d0d;
-    border-radius:10px;
-    margin:40px 0;
-    opacity:0.85;
-    background-size:cover;
-    background-position:center;
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-  }
-
   .kc-logo {
     width:200px;
     height:200px;
@@ -294,6 +314,16 @@ document.addEventListener("DOMContentLoaded", () => {
 </head>
 <body>
 
+<div class="lines-layer">
+  <div class="line" style="left:5%;"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
 <a class="return" href="https://the-global-desk.com">← RETURN TO HUB</a>
 
 <section class="hero">
@@ -304,8 +334,8 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="eyebrow">Deep Dive Investigation</div>
     <h1 class="title">The Crypto Trail: The Rise and Disappearance of Shlomi Kessler</h1>
     <p class="lead">
-      An immersive investigation into the man who built a digital empire, vanished without a trace,
-      and left behind a network of shell companies, encrypted wallets, and unanswered questions.
+      An immersive investigation into the man who built a digital empire inside the UAE’s free‑zone ecosystem,
+      siphoned millions through cross‑border settlement channels, and vanished as regulators closed in.
     </p>
   </div>
 </section>
@@ -326,32 +356,35 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="info-panel" id="panel-uae">
       <h3>Kessler Corp — UAE Headquarters</h3>
       <p>
-        Founded in Dubai in 2020, Kessler Corp rapidly expanded into cross-border digital asset infrastructure.
-        Corporate filings show a dense network of free-zone entities and rapid subsidiary turnover.
+        Founded in Dubai in 2020, Kessler Corp rapidly embedded itself in free‑zone fintech programs, gaining access
+        to prototype settlement APIs and cross‑border routing infrastructure. Corporate filings show a dense network
+        of entities registered in DIFC, DMCC, and Ras Al Khaimah.
       </p>
     </div>
 
     <div class="info-panel" id="panel-wallets">
       <h3>Wallet Network & Irregular Transfers</h3>
       <p>
-        Analysts identified wallet clusters exhibiting circular transfers, timed movements before regulatory deadlines,
-        and interactions with exchanges known for minimal KYC enforcement.
+        Analysts identified wallet clusters exhibiting circular transfers, micro‑diversions from high‑volume
+        remittance flows, and interactions with exchanges known for minimal KYC enforcement. Several wallets
+        correlate with offshore accounts later closed without explanation.
       </p>
     </div>
 
     <div class="info-panel" id="panel-offshore">
       <h3>Offshore Entities & Nominee Directors</h3>
       <p>
-        Subsidiaries in Cyprus, Malta, and other jurisdictions were short-lived and often used nominee directors
-        with minimal public presence.
+        Subsidiaries in Cyprus, Malta, and Singapore were short‑lived and often used nominee directors with no
+        digital footprint. Many of these entities existed for weeks, processed large transfers, then dissolved.
       </p>
     </div>
 
     <div class="info-panel" id="panel-disappearance">
       <h3>The Disappearance</h3>
       <p>
-        After a private meeting in Abu Dhabi in early 2026, Kessler vanished from public view.
-        Corporate filings ceased, wallet activity dropped to zero, and several subsidiaries dissolved quietly.
+        After a private meeting in Abu Dhabi in early 2026, Kessler vanished from public view. Corporate filings
+        ceased, wallet activity dropped to zero, and several subsidiaries dissolved quietly. Regulators have open
+        inquiries, but no charges have been filed.
       </p>
     </div>
   </div>
@@ -374,7 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
   </p>
 
   <p>
-    According to internal correspondence later leaked to regulators, Kessler gained access to prototype settlement
+    Internal correspondence later leaked to regulators shows that Kessler gained access to prototype settlement
     APIs used by several remittance firms operating out of DIFC and DMCC. These APIs were part of a pilot program
     intended to streamline cross‑border transfers between the UAE, India, and East Africa. What investigators now
     believe is that Kessler quietly modified the routing logic to introduce “micro‑delays” — tiny pauses in batch
@@ -392,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
       multiplied across millions of transactions, they formed the foundation of a much larger scheme.
     </p>
     <img src="GRAPHIC-TECH-DIAGRAM.png"
-         style="flex:0 0 180px; height:120px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -414,13 +447,14 @@ document.addEventListener("DOMContentLoaded", () => {
   <!-- SMALL GRAPHIC #2 (REDACTED DOCUMENT) -->
   <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
     <img src="GRAPHIC-REDACTED-DOC.png"
-         style="flex:0 0 180px; height:120px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
     <p style="flex:1;">
       The audit’s findings were immediately sealed. The compliance firm that conducted it dissolved two weeks later.
       Investigators recovered fragments of the report, including a page showing a redacted section titled
       <em>“Unexplained Outflows — Priority Review.”</em> The surviving text referenced “non‑standard routing behavior”
       and “external wallets not declared in corporate filings.” One line, partially visible beneath a redaction bar,
-      read: <em>“Pattern suggests intentional diversion.”</em>
+      read: <em>“Pattern suggests intentional diversion.”</em> The whistleblower who leaked the fragments has since
+      left the UAE.
     </p>
   </div>
 
@@ -446,12 +480,12 @@ document.addEventListener("DOMContentLoaded", () => {
     <p style="flex:1;">
       Within days, Kessler Corp wiped several servers, dissolved three subsidiaries, and terminated dozens of
       employees. The remaining staff received a single internal memo: <em>“Strategic restructuring in progress.
-      All inquiries suspended.”</em> No restructuring ever occurred. The $150 million remains missing. The offshore
-      accounts used in the siphoning scheme were closed, and the nominee directors vanished. The wallets tied to
-      Kessler’s inner circle have been dormant since March 2026.
+      All inquiries suspended.”</em> No restructuring ever occurred. The <strong>$150 million</strong> remains
+      missing. The offshore accounts used in the siphoning scheme were closed, and the nominee directors vanished.
+      The wallets tied to Kessler’s inner circle have been dormant since March 2026.
     </p>
     <img src="GRAPHIC-MONEY-FLOW.png"
-         style="flex:0 0 180px; height:120px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -472,3 +506,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </section>
 
+<footer>
+  © 2026 The Global Desk Investigations — Interactive Research Hub
+</footer>
+
+</body>
+</html>
+```
