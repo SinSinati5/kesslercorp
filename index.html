@@ -11,7 +11,7 @@
     --panel: rgba(255,255,255,0.05);
     --accent:#b30000;
     --muted:#bdbdbd;
-    --glass-blur:10px;
+    --glass-blur:6px;
   }
 
   body{
@@ -23,7 +23,7 @@
     position:relative;
   }
 
-  /* RANDOM MOVING LINES — 150% MORE */
+  /* RANDOM MOVING LINES — THICKER + MORE */
   .lines-layer{
     position:fixed;
     inset:0;
@@ -32,26 +32,24 @@
   }
   .line{
     position:absolute;
-    width:2px;
-    height:260px;
-    background:linear-gradient(to bottom, rgba(255,255,255,0.22), rgba(255,255,255,0));
-    opacity:0.45;
-    animation:drift 18s linear infinite;
+    width:4px;
+    height:300px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0.28), rgba(255,255,255,0));
+    opacity:0.55;
+    animation:drift 16s linear infinite;
   }
   @keyframes drift{
-    0%{transform:translate(0,-260px);}
-    25%{transform:translate(-12px,-120px);}
-    50%{transform:translate(10px,40px);}
-    75%{transform:translate(-6px,180px);}
+    0%{transform:translate(0,-300px);}
+    25%{transform:translate(-14px,-120px);}
+    50%{transform:translate(12px,40px);}
+    75%{transform:translate(-8px,200px);}
     100%{transform:translate(0,120vh);}
   }
-
-  /* generate 25 lines */
   .lines-layer .line:nth-child(n){
-    left:calc((100% / 25) * var(--i));
-    top:-260px;
-    animation-delay:calc(-1s * var(--i));
-    animation-duration:calc(18s + (var(--i) * 0.4s));
+    left:calc((100% / 35) * var(--i));
+    top:-300px;
+    animation-delay:calc(-0.8s * var(--i));
+    animation-duration:calc(16s + (var(--i) * 0.35s));
   }
 
   .return{
@@ -88,12 +86,21 @@
     z-index:3;
     max-width:900px;
     padding:60px 40px;
-    margin-top:40px;
+    margin-top:60px;
     text-align:center;
     background:rgba(255,255,255,0.03);
     border:1px solid rgba(255,255,255,0.06);
     border-radius:12px;
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(var(--glass-blur));
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:20px;
+    margin-top:-10px;
   }
   h1.title{
     font-family:Georgia, serif;
@@ -102,6 +109,15 @@
   }
   .title .name{
     transition:opacity .4s ease;
+  }
+  .lead{
+    margin-top:18px;
+    font-size:16px;
+    color:var(--muted);
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
   }
 
   /* MAP + FIXED PANEL */
@@ -140,12 +156,18 @@
     background:var(--accent);
     transform:translate(-50%,-50%);
     cursor:pointer;
+    box-shadow:0 0 12px rgba(179,0,0,0.6);
   }
   .hotspot-label{
     position:absolute;
-    transform:translate(-50%,-140%);
-    font-size:11px;
-    color:#ddd;
+    transform:translate(-50%, -160%);
+    font-size:12px;
+    color:#fff;
+    font-weight:600;
+    text-shadow:0 0 4px #000;
+    padding:2px 6px;
+    background:rgba(0,0,0,0.4);
+    border-radius:4px;
   }
 
   /* FIXED PANEL */
@@ -156,7 +178,7 @@
     background:rgba(255,255,255,0.05);
     border:1px solid rgba(255,255,255,0.08);
     border-radius:12px;
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(var(--glass-blur));
     padding:25px;
     overflow:hidden;
     display:flex;
@@ -173,7 +195,7 @@
   }
 
   .panel-title{
-    font-size:20px;
+    font-size:22px;
     margin:0;
     font-weight:700;
   }
@@ -183,6 +205,7 @@
     line-height:1.6;
     color:#ccc;
     overflow-y:auto;
+    white-space:pre-line;
   }
 
   /* ARTICLE */
@@ -193,7 +216,18 @@
     background:rgba(255,255,255,0.02);
     border:1px solid rgba(255,255,255,0.04);
     border-radius:12px;
-    backdrop-filter:blur(8px);
+    backdrop-filter:blur(var(--glass-blur));
+  }
+  .article h2{
+    font-family:Georgia, serif;
+    font-size:42px;
+    margin-bottom:20px;
+  }
+  .article p{
+    font-size:19px;
+    line-height:1.8;
+    color:#d0d0d0;
+    margin-bottom:22px;
   }
   .article-img{
     width:100%;
@@ -216,12 +250,17 @@
     border-radius:12px;
     margin:60px auto;
   }
+
+  footer{
+    text-align:center;
+    padding:40px;
+    color:#777;
+    font-size:13px;
+  }
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-  /* Fade only the name */
   const nameSpan = document.querySelector(".title .name");
   window.addEventListener("scroll", () => {
     const sc = window.scrollY;
@@ -231,97 +270,104 @@ document.addEventListener("DOMContentLoaded", () => {
     nameSpan.style.opacity = String(1 - t);
   });
 
-  /* FIXED PANEL CONTENT */
-  const panel = document.getElementById("fixed-panel");
   const panelTitle = document.getElementById("panel-title");
   const panelText = document.getElementById("panel-text");
 
   const data = {
     uae:{
       title:"Dubai Headquarters — Free‑Zone Access",
-      text:`Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones, giving the company access to prototype
-            settlement APIs normally restricted to vetted financial institutions. Internal documents show Kessler
-            personally modified routing logic used by several UAE‑based remittance firms, introducing micro‑delays
-            that enabled fractional siphoning from high‑volume transfers.
+      text:`Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones, giving the company access to prototype settlement APIs normally restricted to vetted financial institutions. Internal documents show Kessler personally modified routing logic used by several UAE‑based remittance firms, introducing micro‑delays that enabled fractional siphoning from high‑volume transfers.
 
-            Regulatory filings reveal rapid entity creation, short‑lived subsidiaries, and unusual turnover in
-            compliance staff. Several employees reported being reassigned after questioning discrepancies in ledger
-            reports.`
+Regulatory filings reveal rapid entity creation, short‑lived subsidiaries, and unusual turnover in compliance staff. Several employees reported being reassigned after questioning discrepancies in ledger reports.
+
+Additional internal memos reference “routing anomalies” and “temporary liquidity gaps,” suggesting deliberate manipulation of settlement pathways. A confidential note from a senior engineer warns that “test routes are persisting in production,” a phrase investigators now view as a red flag.`
     },
     offshore:{
       title:"Offshore Network — Cyprus, Malta, Singapore",
-      text:`Meridian Gate Holdings served as the central hub for offshore routing. Accounts were opened under nominee
-            directors with no digital footprint, used for large transfers, then closed within days. A confidential
-            audit later revealed more than $150 million USD passed through these entities before disappearing.
+      text:`Meridian Gate Holdings served as the central hub for offshore routing. Accounts were opened under nominee directors with no digital footprint, used for large transfers, then closed within days. A confidential audit later revealed more than $150 million USD passed through these entities before disappearing.
 
-            Investigators recovered fragments of a sealed report referencing “non‑standard routing behavior,”
-            “external wallets not declared in filings,” and “intentional diversion patterns.”`
+Investigators recovered fragments of a sealed report referencing “non‑standard routing behavior,” “external wallets not declared in filings,” and “intentional diversion patterns.”
+
+Several offshore entities dissolved within 48 hours of regulatory inquiries, indicating coordinated shutdown procedures. One dissolved entity showed a final outbound transfer to a wallet cluster later tied to Kessler’s inner circle.`
     },
     wallets:{
       title:"Wallet Clusters — Automated Micro‑Diversions",
-      text:`Blockchain analysts identified synchronized wallet clusters executing hundreds of transfers in under two
-            minutes. These clusters interacted with exchanges known for minimal KYC enforcement, suggesting
-            pre‑programmed automation.
+      text:`Blockchain analysts identified synchronized wallet clusters executing hundreds of transfers in under two minutes. These clusters interacted with exchanges known for minimal KYC enforcement, suggesting pre‑programmed automation.
 
-            Several wallets went dormant immediately after regulators initiated inquiries, indicating coordinated
-            shutdown.`
+Several wallets went dormant immediately after regulators initiated inquiries, indicating coordinated shutdown.
+
+One cluster executed 418 transfers in under 90 seconds, a pattern consistent with automated laundering scripts. Transaction graphs show circular flows designed to obscure origin, with small amounts peeled off at each hop before consolidation into master wallets.`
     },
     disappearance:{
       title:"Abu Dhabi Meeting — Final Sighting",
-      text:`Witnesses describe Kessler as tense and accompanied by two unidentified men, one carrying a biometric‑locked
-            case. Security footage shows Kessler entering a black SUV with diplomatic plates. The vehicle was tracked
-            toward Al Maktoum International Airport but never logged as arriving.
+      text:`Witnesses describe Kessler as tense and accompanied by two unidentified men, one carrying a biometric‑locked case. Security footage shows Kessler entering a black SUV with diplomatic plates. The vehicle was tracked toward Al Maktoum International Airport but never logged as arriving.
 
-            Within days, Kessler Corp wiped servers, dissolved subsidiaries, and terminated staff. Kessler has not
-            been seen since.`
+Within days, Kessler Corp wiped servers, dissolved subsidiaries, and terminated staff. Kessler has not been seen since.
+
+A redacted memo recovered from the Dubai office references “Protocol Meridian — Phase Closure,” suggesting a planned disappearance. The memo’s final line, partially visible beneath black ink, reads: “All routes must be severed before extraction.”`
     },
     iran:{
       title:"Iran Routing Link — Early Experiments",
-      text:`Early routing experiments tied to a Tehran‑linked logistics firm appear to have informed the micro‑delay
-            techniques later deployed inside UAE settlement APIs. Internal notes reference “legacy routing modules”
-            and “external latency tests.”
+      text:`Early routing experiments tied to a Tehran‑linked logistics firm appear to have informed the micro‑delay techniques later deployed inside UAE settlement APIs. Internal notes reference “legacy routing modules” and “external latency tests.”
 
-            No sanctions violations were confirmed, but investigators believe this period shaped Kessler’s
-            understanding of cross‑border routing vulnerabilities.`
+No sanctions violations were confirmed, but investigators believe this period shaped Kessler’s understanding of cross‑border routing vulnerabilities.
+
+Several prototype scripts recovered from this period resemble early versions of the siphoning algorithm. Comments in the code reference “delay windows” and “fractional skims,” language that reappears in later production systems.`
     },
     israel:{
       title:"Israel Tech Footprint — Encryption Work",
-      text:`Before arriving in Dubai, Kessler contributed to encryption modules and routing optimizations for a Tel Aviv
-            cybersecurity firm. Former colleagues recall a young engineer who “saw patterns in network traffic no one
-            else noticed.”
+      text:`Before arriving in Dubai, Kessler contributed to encryption modules and routing optimizations for a Tel Aviv cybersecurity firm. Former colleagues recall a young engineer who “saw patterns in network traffic no one else noticed.”
 
-            Several techniques used in Kessler Corp’s infrastructure resemble early prototypes developed during this
-            period.`
+Several techniques used in Kessler Corp’s infrastructure resemble early prototypes developed during this period.
+
+Internal logs show Kessler authored a “self‑correcting routing module,” later adapted into the siphoning system. A former teammate describes his work as “obsessed with hiding intent inside normal traffic,” a description that now feels prophetic.`
     }
   };
 
-  /* HOTSPOT INTERACTION */
+  function hackerScramble(element, newText){
+    const chars = "!<>-_\\/[]{}—=+*^?#________";
+    let iterations = 0;
+    const oldText = element.innerText;
+    const length = Math.max(oldText.length, newText.length);
+
+    const interval = setInterval(() => {
+      element.innerText = Array.from({length}).map((_, i) => {
+        if(i < iterations){
+          return newText[i] || "";
+        }
+        return chars[Math.floor(Math.random() * chars.length)];
+      }).join("");
+
+      if(iterations >= length){
+        clearInterval(interval);
+        element.innerText = newText;
+      }
+      iterations += 0.7;
+    }, 30);
+  }
+
   document.querySelectorAll(".hotspot").forEach(h => {
     h.addEventListener("mouseenter", () => {
       const key = h.dataset.key;
-      panelTitle.textContent = data[key].title;
-      panelText.textContent = data[key].text;
+      hackerScramble(panelTitle, data[key].title);
+      hackerScramble(panelText, data[key].text);
     });
     h.addEventListener("click", () => {
       const key = h.dataset.key;
-      panelTitle.textContent = data[key].title;
-      panelText.textContent = data[key].text;
+      hackerScramble(panelTitle, data[key].title);
+      hackerScramble(panelText, data[key].text);
     });
   });
 
-  /* Default panel */
   panelTitle.textContent = data.uae.title;
   panelText.textContent = data.uae.text;
-
 });
 </script>
 
 </head>
 <body>
 
-<!-- MOVING LINES -->
 <div class="lines-layer">
-  <!-- generate 25 lines -->
   <div class="line" style="--i:1"></div>
   <div class="line" style="--i:2"></div>
   <div class="line" style="--i:3"></div>
@@ -347,6 +393,16 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="line" style="--i:23"></div>
   <div class="line" style="--i:24"></div>
   <div class="line" style="--i:25"></div>
+  <div class="line" style="--i:26"></div>
+  <div class="line" style="--i:27"></div>
+  <div class="line" style="--i:28"></div>
+  <div class="line" style="--i:29"></div>
+  <div class="line" style="--i:30"></div>
+  <div class="line" style="--i:31"></div>
+  <div class="line" style="--i:32"></div>
+  <div class="line" style="--i:33"></div>
+  <div class="line" style="--i:34"></div>
+  <div class="line" style="--i:35"></div>
 </div>
 
 <a class="return" href="#">← RETURN TO HUB</a>
@@ -367,11 +423,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section class="map-stage">
-
-  <!-- MAP -->
   <div class="sticky-map">
     <div class="world-map">
-
       <div class="hotspot" style="left:72%; top:58%;" data-key="uae"></div>
       <div class="hotspot-label" style="left:72%; top:58%;">Dubai HQ</div>
 
@@ -389,25 +442,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="hotspot" style="left:68%; top:36%;" data-key="israel"></div>
       <div class="hotspot-label" style="left:68%; top:36%;">Israel Footprint</div>
-
     </div>
   </div>
 
-  <!-- FIXED PANEL -->
   <div class="info-panel-fixed" id="fixed-panel">
     <div class="panel-image"></div>
     <h3 class="panel-title" id="panel-title"></h3>
     <div class="panel-text" id="panel-text"></div>
   </div>
-
 </section>
 
-<!-- ARTICLE SECTION (unchanged from previous version) -->
 <section class="article">
-
   <h2>The Man, The Empire, The Vanishing</h2>
 
-  <!-- MAIN KESSLER IMAGE -->
   <div class="article-img" style="background-image:url('kessler-1.png');"></div>
 
   <p>
@@ -426,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
     processing that allowed him to divert fractional amounts from high‑volume transfers into wallets he controlled.
   </p>
 
-  <!-- SMALL GRAPHIC #1 (TECH DIAGRAM) -->
   <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
     <p style="flex:1;">
       A former systems analyst, who spoke under condition of anonymity, provided investigators with a screenshot
@@ -456,7 +502,6 @@ document.addEventListener("DOMContentLoaded", () => {
     before landing in wallets tied to Kessler’s inner circle.
   </p>
 
-  <!-- SMALL GRAPHIC #2 (REDACTED DOCUMENT) -->
   <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
     <img src="GRAPHIC-REDACTED-DOC.png"
          style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
@@ -487,7 +532,6 @@ document.addEventListener("DOMContentLoaded", () => {
     case with a biometric lock.
   </p>
 
-  <!-- SMALL GRAPHIC #3 (MONEY FLOW / FRAUD DIAGRAM) -->
   <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
     <p style="flex:1;">
       Within days, Kessler Corp wiped several servers, dissolved three subsidiaries, and terminated dozens of
@@ -513,10 +557,9 @@ document.addEventListener("DOMContentLoaded", () => {
     the truth is, one fact remains: <strong>Shlomi Kessler built a machine no one fully understood — and then
     vanished into the one place no one could follow.</strong>
   </p>
-
-  <div class="kc-logo">KC</div>
-
 </section>
+
+<div class="kc-logo">KC</div>
 
 <footer>
   © 2026 The Global Desk Investigations — Interactive Research Hub
