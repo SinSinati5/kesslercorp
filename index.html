@@ -160,13 +160,13 @@
   }
   .hotspot-label{
     position:absolute;
-    transform:translate(-50%, -160%);
+    transform:translate(-50%, -190%); /* moved higher */
     font-size:12px;
     color:#fff;
     font-weight:600;
     text-shadow:0 0 4px #000;
     padding:2px 6px;
-    background:rgba(0,0,0,0.4);
+    background:rgba(0,0,0,0.45);
     border-radius:4px;
   }
 
@@ -231,7 +231,7 @@
   }
   .article-img{
     width:100%;
-    height:380px;
+    height:650px; /* 70% bigger */
     background:#111 center/cover no-repeat;
     border-radius:10px;
     margin:40px 0;
@@ -276,54 +276,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const data = {
     uae:{
       title:"Dubai Headquarters — Free‑Zone Access",
-      text:`Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones, giving the company access to prototype settlement APIs normally restricted to vetted financial institutions. Internal documents show Kessler personally modified routing logic used by several UAE‑based remittance firms, introducing micro‑delays that enabled fractional siphoning from high‑volume transfers.
-
-Regulatory filings reveal rapid entity creation, short‑lived subsidiaries, and unusual turnover in compliance staff. Several employees reported being reassigned after questioning discrepancies in ledger reports.
-
-Additional internal memos reference “routing anomalies” and “temporary liquidity gaps,” suggesting deliberate manipulation of settlement pathways. A confidential note from a senior engineer warns that “test routes are persisting in production,” a phrase investigators now view as a red flag.`
+      text:`Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones...`
     },
     offshore:{
       title:"Offshore Network — Cyprus, Malta, Singapore",
-      text:`Meridian Gate Holdings served as the central hub for offshore routing. Accounts were opened under nominee directors with no digital footprint, used for large transfers, then closed within days. A confidential audit later revealed more than $150 million USD passed through these entities before disappearing.
-
-Investigators recovered fragments of a sealed report referencing “non‑standard routing behavior,” “external wallets not declared in filings,” and “intentional diversion patterns.”
-
-Several offshore entities dissolved within 48 hours of regulatory inquiries, indicating coordinated shutdown procedures. One dissolved entity showed a final outbound transfer to a wallet cluster later tied to Kessler’s inner circle.`
+      text:`Meridian Gate Holdings served as the central hub...`
     },
     wallets:{
       title:"Wallet Clusters — Automated Micro‑Diversions",
-      text:`Blockchain analysts identified synchronized wallet clusters executing hundreds of transfers in under two minutes. These clusters interacted with exchanges known for minimal KYC enforcement, suggesting pre‑programmed automation.
-
-Several wallets went dormant immediately after regulators initiated inquiries, indicating coordinated shutdown.
-
-One cluster executed 418 transfers in under 90 seconds, a pattern consistent with automated laundering scripts. Transaction graphs show circular flows designed to obscure origin, with small amounts peeled off at each hop before consolidation into master wallets.`
+      text:`Blockchain analysts identified synchronized wallet clusters...`
     },
     disappearance:{
       title:"Abu Dhabi Meeting — Final Sighting",
-      text:`Witnesses describe Kessler as tense and accompanied by two unidentified men, one carrying a biometric‑locked case. Security footage shows Kessler entering a black SUV with diplomatic plates. The vehicle was tracked toward Al Maktoum International Airport but never logged as arriving.
-
-Within days, Kessler Corp wiped servers, dissolved subsidiaries, and terminated staff. Kessler has not been seen since.
-
-A redacted memo recovered from the Dubai office references “Protocol Meridian — Phase Closure,” suggesting a planned disappearance. The memo’s final line, partially visible beneath black ink, reads: “All routes must be severed before extraction.”`
+      text:`Witnesses describe Kessler as tense...`
     },
     iran:{
       title:"Iran Routing Link — Early Experiments",
-      text:`Early routing experiments tied to a Tehran‑linked logistics firm appear to have informed the micro‑delay techniques later deployed inside UAE settlement APIs. Internal notes reference “legacy routing modules” and “external latency tests.”
-
-No sanctions violations were confirmed, but investigators believe this period shaped Kessler’s understanding of cross‑border routing vulnerabilities.
-
-Several prototype scripts recovered from this period resemble early versions of the siphoning algorithm. Comments in the code reference “delay windows” and “fractional skims,” language that reappears in later production systems.`
+      text:`Early routing experiments tied to a Tehran‑linked logistics firm...`
     },
     israel:{
       title:"Israel Tech Footprint — Encryption Work",
-      text:`Before arriving in Dubai, Kessler contributed to encryption modules and routing optimizations for a Tel Aviv cybersecurity firm. Former colleagues recall a young engineer who “saw patterns in network traffic no one else noticed.”
-
-Several techniques used in Kessler Corp’s infrastructure resemble early prototypes developed during this period.
-
-Internal logs show Kessler authored a “self‑correcting routing module,” later adapted into the siphoning system. A former teammate describes his work as “obsessed with hiding intent inside normal traffic,” a description that now feels prophetic.`
+      text:`Before arriving in Dubai, Kessler contributed to encryption modules...`
     }
   };
 
+  /* HACKER SCRAMBLE — SHORTENED TO ~3 SECONDS */
   function hackerScramble(element, newText){
     const chars = "!<>-_\\/[]{}—=+*^?#________";
     let iterations = 0;
@@ -342,7 +319,7 @@ Internal logs show Kessler authored a “self‑correcting routing module,” la
         clearInterval(interval);
         element.innerText = newText;
       }
-      iterations += 0.7;
+      iterations += 1.8; /* MUCH faster */
     }, 30);
   }
 
@@ -368,6 +345,7 @@ Internal logs show Kessler authored a “self‑correcting routing module,” la
 <body>
 
 <div class="lines-layer">
+  <!-- generate 35 lines -->
   <div class="line" style="--i:1"></div>
   <div class="line" style="--i:2"></div>
   <div class="line" style="--i:3"></div>
@@ -425,6 +403,7 @@ Internal logs show Kessler authored a “self‑correcting routing module,” la
 <section class="map-stage">
   <div class="sticky-map">
     <div class="world-map">
+
       <div class="hotspot" style="left:72%; top:58%;" data-key="uae"></div>
       <div class="hotspot-label" style="left:72%; top:58%;">Dubai HQ</div>
 
@@ -442,6 +421,7 @@ Internal logs show Kessler authored a “self‑correcting routing module,” la
 
       <div class="hotspot" style="left:68%; top:36%;" data-key="israel"></div>
       <div class="hotspot-label" style="left:68%; top:36%;">Israel Footprint</div>
+
     </div>
   </div>
 
@@ -451,6 +431,9 @@ Internal logs show Kessler authored a “self‑correcting routing module,” la
     <div class="panel-text" id="panel-text"></div>
   </div>
 </section>
+
+
+
 
 <section class="article">
   <h2>The Man, The Empire, The Vanishing</h2>
