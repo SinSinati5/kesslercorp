@@ -607,7 +607,7 @@ Several techniques used in Kessler Corp’s infrastructure resemble early protot
     const oldText = targetEl.innerText || "";
     const maxLen = Math.max(oldText.length, newText.length);
     let frame = 0;
-    const totalFrames = Math.ceil((3000) / 30); // ~3 seconds at 30ms interval
+    const totalFrames = Math.ceil((1000) / 10); // ~3 seconds at 30ms interval
     const interval = setInterval(() => {
       const progress = frame / totalFrames;
       const revealCount = Math.floor(progress * maxLen);
