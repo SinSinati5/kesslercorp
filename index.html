@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>The Crypto Trail — Shlomi Kessler Investigation</title>
 
 <style>
@@ -12,51 +12,54 @@
     --accent:#b30000;
     --muted:#bdbdbd;
     --glass-blur:6px;
+    --line-width:4px;
   }
 
+  /* Base */
+  html,body{height:100%}
   body{
     margin:0;
     background:var(--bg);
     color:#e9e9e9;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     overflow-x:hidden;
-    position:relative;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
   }
+  a{color:inherit;text-decoration:none}
 
-  /* RANDOM MOVING LINES — THICKER + MORE */
+  /* MOVING LINES (thicker, visible behind blur and article) */
   .lines-layer{
     position:fixed;
     inset:0;
     pointer-events:none;
-    z-index:-1;
+    z-index:-2;
+    overflow:hidden;
   }
   .line{
     position:absolute;
-    width:4px;
-    height:300px;
-    background:linear-gradient(to bottom, rgba(255,255,255,0.28), rgba(255,255,255,0));
-    opacity:0.55;
+    width:var(--line-width);
+    height:320px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0.30), rgba(255,255,255,0));
+    opacity:0.6;
+    filter:blur(0.6px);
     animation:drift 16s linear infinite;
+    will-change:transform;
   }
   @keyframes drift{
-    0%{transform:translate(0,-300px);}
-    25%{transform:translate(-14px,-120px);}
-    50%{transform:translate(12px,40px);}
-    75%{transform:translate(-8px,200px);}
-    100%{transform:translate(0,120vh);}
-  }
-  .lines-layer .line:nth-child(n){
-    left:calc((100% / 35) * var(--i));
-    top:-300px;
-    animation-delay:calc(-0.8s * var(--i));
-    animation-duration:calc(16s + (var(--i) * 0.35s));
+    0%{transform:translateY(-360px) translateX(0)}
+    25%{transform:translateY(-120px) translateX(-14px)}
+    50%{transform:translateY(40px) translateX(12px)}
+    75%{transform:translateY(200px) translateX(-8px)}
+    100%{transform:translateY(120vh) translateX(0)}
   }
 
+  /* Return link */
   .return{
     position:fixed;
     left:20px;
     top:20px;
-    z-index:2000;
+    z-index:1200;
     padding:10px 14px;
     background:rgba(255,255,255,0.06);
     border:1px solid rgba(255,255,255,0.08);
@@ -78,20 +81,24 @@
   .hero-map{
     position:absolute;
     inset:0;
-    background:url('map.png') center/cover no-repeat;
+    background:
+      url('assets/world-map-hero.jpg') center/cover no-repeat,
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), transparent 40%);
     filter:brightness(.45) contrast(.9);
+    z-index:0;
   }
   .hero-inner{
     position:relative;
     z-index:3;
-    max-width:900px;
-    padding:60px 40px;
+    max-width:920px;
+    padding:60px 44px;
     margin-top:60px;
     text-align:center;
     background:rgba(255,255,255,0.03);
     border:1px solid rgba(255,255,255,0.06);
     border-radius:12px;
     backdrop-filter:blur(var(--glass-blur));
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
   }
   .eyebrow{
     font-size:12px;
@@ -99,28 +106,29 @@
     text-transform:uppercase;
     color:var(--accent);
     font-weight:700;
-    margin-bottom:20px;
+    margin-bottom:18px;
     margin-top:-10px;
   }
   h1.title{
-    font-family:Georgia, serif;
-    font-size:48px;
     margin:0;
+    font-family:Georgia, serif;
+    font-size:clamp(28px,4.6vw,48px);
+    line-height:1.02;
+    color:#fff;
   }
   .title .name{
-    transition:opacity .4s ease;
+    transition:opacity .35s ease;
+    display:inline-block;
   }
-  .lead{
-    margin-top:18px;
-    font-size:16px;
-    color:var(--muted);
+  p.lead{
+    margin:18px auto 0;
     max-width:760px;
-    margin-left:auto;
-    margin-right:auto;
+    color:var(--muted);
+    font-size:16px;
     line-height:1.6;
   }
 
-  /* MAP + FIXED PANEL */
+  /* MAP STAGE */
   .map-stage{
     max-width:1400px;
     margin:0 auto;
@@ -138,77 +146,89 @@
     overflow:hidden;
     background:rgba(255,255,255,0.02);
     border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
   }
 
   .world-map{
     position:relative;
     width:100%;
     height:100%;
-    background:url('map.png') center/cover no-repeat;
+    background:
+      url('assets/world-map-large.jpg') center/cover no-repeat;
     filter:brightness(.35) contrast(.9);
   }
 
+  /* Hotspots */
   .hotspot{
     position:absolute;
     width:18px;
     height:18px;
     border-radius:50%;
     background:var(--accent);
+    box-shadow:0 6px 18px rgba(179,0,0,0.25), 0 0 0 6px rgba(179,0,0,0.06);
     transform:translate(-50%,-50%);
     cursor:pointer;
-    box-shadow:0 0 12px rgba(179,0,0,0.6);
+    transition:transform .18s ease, box-shadow .18s ease;
+    z-index:6;
   }
+  .hotspot:hover{transform:translate(-50%,-50%) scale(1.18); box-shadow:0 10px 30px rgba(179,0,0,0.35)}
   .hotspot-label{
     position:absolute;
-    transform:translate(-50%, -190%); /* moved higher */
+    transform:translate(-50%, -190%);
     font-size:12px;
     color:#fff;
-    font-weight:600;
-    text-shadow:0 0 4px #000;
-    padding:2px 6px;
+    font-weight:700;
+    text-shadow:0 0 6px rgba(0,0,0,0.8);
+    padding:6px 8px;
     background:rgba(0,0,0,0.45);
-    border-radius:4px;
+    border-radius:6px;
+    z-index:7;
+    white-space:nowrap;
   }
 
-  /* FIXED PANEL */
+  /* Fixed right panel */
   .info-panel-fixed{
     position:sticky;
     top:20px;
     height:70vh;
-    background:rgba(255,255,255,0.05);
+    background:var(--panel);
     border:1px solid rgba(255,255,255,0.08);
     border-radius:12px;
     backdrop-filter:blur(var(--glass-blur));
-    padding:25px;
-    overflow:hidden;
+    padding:22px;
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:18px;
+    overflow:hidden;
   }
-
   .panel-image{
     width:100%;
     height:180px;
-    background:#111;
+    background:#222 center/cover no-repeat;
     border-radius:10px;
-    opacity:0.6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#9a9a9a;
+    font-size:13px;
+    letter-spacing:1px;
+    border:1px solid rgba(255,255,255,0.03);
   }
-
   .panel-title{
-    font-size:22px;
+    font-size:20px;
     margin:0;
+    color:#fff;
     font-weight:700;
   }
-
   .panel-text{
     font-size:15px;
+    color:#d0d0d0;
     line-height:1.6;
-    color:#ccc;
-    overflow-y:auto;
+    overflow:auto;
     white-space:pre-line;
   }
 
-  /* ARTICLE */
+  /* Article */
   .article{
     max-width:1400px;
     margin:80px auto;
@@ -217,11 +237,13 @@
     border:1px solid rgba(255,255,255,0.04);
     border-radius:12px;
     backdrop-filter:blur(var(--glass-blur));
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
   }
   .article h2{
     font-family:Georgia, serif;
     font-size:42px;
     margin-bottom:20px;
+    color:#fff;
   }
   .article p{
     font-size:19px;
@@ -229,9 +251,20 @@
     color:#d0d0d0;
     margin-bottom:22px;
   }
-  .article-img{
+
+  /* FIRST article image (kessler-1) stays original size */
+  .article-img-first{
     width:100%;
-    height:650px; /* 70% bigger */
+    height:380px; /* original size preserved */
+    background:#111 center/cover no-repeat;
+    border-radius:10px;
+    margin:40px 0;
+  }
+
+  /* Subsequent article images increased ~70% */
+  .article-img-large{
+    width:100%;
+    height:650px; /* ~70% larger */
     background:#111 center/cover no-repeat;
     border-radius:10px;
     margin:40px 0;
@@ -249,6 +282,7 @@
     justify-content:center;
     border-radius:12px;
     margin:60px auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
   }
 
   footer{
@@ -257,139 +291,66 @@
     color:#777;
     font-size:13px;
   }
-</style>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const nameSpan = document.querySelector(".title .name");
-  window.addEventListener("scroll", () => {
-    const sc = window.scrollY;
-    const fadeStart = 40;
-    const fadeEnd = 260;
-    const t = Math.min(Math.max((sc - fadeStart) / (fadeEnd - fadeStart), 0), 1);
-    nameSpan.style.opacity = String(1 - t);
-  });
-
-  const panelTitle = document.getElementById("panel-title");
-  const panelText = document.getElementById("panel-text");
-
-  const data = {
-    uae:{
-      title:"Dubai Headquarters — Free‑Zone Access",
-      text:`Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones...`
-    },
-    offshore:{
-      title:"Offshore Network — Cyprus, Malta, Singapore",
-      text:`Meridian Gate Holdings served as the central hub...`
-    },
-    wallets:{
-      title:"Wallet Clusters — Automated Micro‑Diversions",
-      text:`Blockchain analysts identified synchronized wallet clusters...`
-    },
-    disappearance:{
-      title:"Abu Dhabi Meeting — Final Sighting",
-      text:`Witnesses describe Kessler as tense...`
-    },
-    iran:{
-      title:"Iran Routing Link — Early Experiments",
-      text:`Early routing experiments tied to a Tehran‑linked logistics firm...`
-    },
-    israel:{
-      title:"Israel Tech Footprint — Encryption Work",
-      text:`Before arriving in Dubai, Kessler contributed to encryption modules...`
-    }
-  };
-
-  /* HACKER SCRAMBLE — SHORTENED TO ~3 SECONDS */
-  function hackerScramble(element, newText){
-    const chars = "!<>-_\\/[]{}—=+*^?#________";
-    let iterations = 0;
-    const oldText = element.innerText;
-    const length = Math.max(oldText.length, newText.length);
-
-    const interval = setInterval(() => {
-      element.innerText = Array.from({length}).map((_, i) => {
-        if(i < iterations){
-          return newText[i] || "";
-        }
-        return chars[Math.floor(Math.random() * chars.length)];
-      }).join("");
-
-      if(iterations >= length){
-        clearInterval(interval);
-        element.innerText = newText;
-      }
-      iterations += 1.8; /* MUCH faster */
-    }, 30);
+  /* Responsive tweaks */
+  @media (max-width:1100px){
+    .map-stage{grid-template-columns:1fr}
+    .info-panel-fixed{position:relative; top:auto; height:auto}
+    .sticky-map{position:relative; height:56vh}
+    .article-img-large, .article-img-first{height:auto}
   }
-
-  document.querySelectorAll(".hotspot").forEach(h => {
-    h.addEventListener("mouseenter", () => {
-      const key = h.dataset.key;
-      hackerScramble(panelTitle, data[key].title);
-      hackerScramble(panelText, data[key].text);
-    });
-    h.addEventListener("click", () => {
-      const key = h.dataset.key;
-      hackerScramble(panelTitle, data[key].title);
-      hackerScramble(panelText, data[key].text);
-    });
-  });
-
-  panelTitle.textContent = data.uae.title;
-  panelText.textContent = data.uae.text;
-});
-</script>
-
+</style>
 </head>
 <body>
 
-<div class="lines-layer">
-  <!-- generate 35 lines -->
-  <div class="line" style="--i:1"></div>
-  <div class="line" style="--i:2"></div>
-  <div class="line" style="--i:3"></div>
-  <div class="line" style="--i:4"></div>
-  <div class="line" style="--i:5"></div>
-  <div class="line" style="--i:6"></div>
-  <div class="line" style="--i:7"></div>
-  <div class="line" style="--i:8"></div>
-  <div class="line" style="--i:9"></div>
-  <div class="line" style="--i:10"></div>
-  <div class="line" style="--i:11"></div>
-  <div class="line" style="--i:12"></div>
-  <div class="line" style="--i:13"></div>
-  <div class="line" style="--i:14"></div>
-  <div class="line" style="--i:15"></div>
-  <div class="line" style="--i:16"></div>
-  <div class="line" style="--i:17"></div>
-  <div class="line" style="--i:18"></div>
-  <div class="line" style="--i:19"></div>
-  <div class="line" style="--i:20"></div>
-  <div class="line" style="--i:21"></div>
-  <div class="line" style="--i:22"></div>
-  <div class="line" style="--i:23"></div>
-  <div class="line" style="--i:24"></div>
-  <div class="line" style="--i:25"></div>
-  <div class="line" style="--i:26"></div>
-  <div class="line" style="--i:27"></div>
-  <div class="line" style="--i:28"></div>
-  <div class="line" style="--i:29"></div>
-  <div class="line" style="--i:30"></div>
-  <div class="line" style="--i:31"></div>
-  <div class="line" style="--i:32"></div>
-  <div class="line" style="--i:33"></div>
-  <div class="line" style="--i:34"></div>
-  <div class="line" style="--i:35"></div>
+<!-- MOVING LINES (35 lines) -->
+<div class="lines-layer" aria-hidden="true">
+  <div class="line" style="--i:1; left:2%"></div>
+  <div class="line" style="--i:2; left:5%"></div>
+  <div class="line" style="--i:3; left:8%"></div>
+  <div class="line" style="--i:4; left:11%"></div>
+  <div class="line" style="--i:5; left:14%"></div>
+  <div class="line" style="--i:6; left:17%"></div>
+  <div class="line" style="--i:7; left:20%"></div>
+  <div class="line" style="--i:8; left:24%"></div>
+  <div class="line" style="--i:9; left:28%"></div>
+  <div class="line" style="--i:10; left:31%"></div>
+  <div class="line" style="--i:11; left:34%"></div>
+  <div class="line" style="--i:12; left:37%"></div>
+  <div class="line" style="--i:13; left:40%"></div>
+  <div class="line" style="--i:14; left:43%"></div>
+  <div class="line" style="--i:15; left:46%"></div>
+  <div class="line" style="--i:16; left:49%"></div>
+  <div class="line" style="--i:17; left:52%"></div>
+  <div class="line" style="--i:18; left:55%"></div>
+  <div class="line" style="--i:19; left:58%"></div>
+  <div class="line" style="--i:20; left:61%"></div>
+  <div class="line" style="--i:21; left:64%"></div>
+  <div class="line" style="--i:22; left:67%"></div>
+  <div class="line" style="--i:23; left:70%"></div>
+  <div class="line" style="--i:24; left:73%"></div>
+  <div class="line" style="--i:25; left:76%"></div>
+  <div class="line" style="--i:26; left:79%"></div>
+  <div class="line" style="--i:27; left:82%"></div>
+  <div class="line" style="--i:28; left:85%"></div>
+  <div class="line" style="--i:29; left:88%"></div>
+  <div class="line" style="--i:30; left:91%"></div>
+  <div class="line" style="--i:31; left:94%"></div>
+  <div class="line" style="--i:32; left:96%"></div>
+  <div class="line" style="--i:33; left:98%"></div>
+  <div class="line" style="--i:34; left:50%; opacity:0.35; height:420px"></div>
+  <div class="line" style="--i:35; left:30%; opacity:0.35; height:420px"></div>
 </div>
 
-<a class="return" href="#">← RETURN TO HUB</a>
+<a class="return" href="#" aria-label="Return to hub">← RETURN TO HUB</a>
 
-<section class="hero">
-  <div class="hero-map"></div>
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-map" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <div class="eyebrow">Deep Dive Investigation</div>
-    <h1 class="title">
+    <h1 id="hero-title" class="title">
       The Crypto Trail: The Rise and Disappearance of
       <span class="name">Shlomi Kessler</span>
     </h1>
@@ -400,45 +361,61 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 </section>
 
-<section class="map-stage">
-  <div class="sticky-map">
-    <div class="world-map">
+<!-- MAP + FIXED PANEL -->
+<section class="map-stage" aria-label="Map and details">
+  <div class="sticky-map" aria-hidden="false">
+    <div class="world-map" role="img" aria-label="World map with hotspots">
 
-      <div class="hotspot" style="left:72%; top:58%;" data-key="uae"></div>
+      <!-- Dubai HQ -->
+      <div class="hotspot" style="left:72%; top:58%;" data-key="uae" aria-label="Dubai HQ hotspot"></div>
       <div class="hotspot-label" style="left:72%; top:58%;">Dubai HQ</div>
 
-      <div class="hotspot" style="left:60%; top:46%;" data-key="offshore"></div>
+      <!-- Offshore -->
+      <div class="hotspot" style="left:60%; top:46%;" data-key="offshore" aria-label="Offshore network hotspot"></div>
       <div class="hotspot-label" style="left:60%; top:46%;">Offshore Network</div>
 
-      <div class="hotspot" style="left:92%; top:74%;" data-key="wallets"></div>
+      <!-- Wallet Clusters (label centered above dot) -->
+      <div class="hotspot" style="left:92%; top:74%;" data-key="wallets" aria-label="Wallet clusters hotspot"></div>
       <div class="hotspot-label" style="left:92%; top:74%;">Wallet Clusters</div>
 
-      <div class="hotspot" style="left:70%; top:62%;" data-key="disappearance"></div>
+      <!-- Abu Dhabi disappearance -->
+      <div class="hotspot" style="left:70%; top:62%;" data-key="disappearance" aria-label="Abu Dhabi hotspot"></div>
       <div class="hotspot-label" style="left:70%; top:62%;">Abu Dhabi</div>
 
-      <div class="hotspot" style="left:66%; top:40%;" data-key="iran"></div>
+      <!-- Iran -->
+      <div class="hotspot" style="left:66%; top:40%;" data-key="iran" aria-label="Iran routing hotspot"></div>
       <div class="hotspot-label" style="left:66%; top:40%;">Iran Link</div>
 
-      <div class="hotspot" style="left:68%; top:36%;" data-key="israel"></div>
+      <!-- Israel -->
+      <div class="hotspot" style="left:68%; top:36%;" data-key="israel" aria-label="Israel footprint hotspot"></div>
       <div class="hotspot-label" style="left:68%; top:36%;">Israel Footprint</div>
 
     </div>
   </div>
 
-  <div class="info-panel-fixed" id="fixed-panel">
-    <div class="panel-image"></div>
-    <h3 class="panel-title" id="panel-title"></h3>
-    <div class="panel-text" id="panel-text"></div>
-  </div>
+  <!-- Fixed panel that updates per hotspot -->
+  <aside class="info-panel-fixed" id="fixed-panel" aria-live="polite">
+    <!-- image placeholders use filenames you can replace later -->
+    <div class="panel-image" id="panel-image">assets/panel-uae.jpg</div>
+    <h3 class="panel-title" id="panel-title">Dubai Headquarters — Free‑Zone Access</h3>
+    <div class="panel-text" id="panel-text">
+      Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones, giving the company access to prototype settlement APIs normally restricted to vetted financial institutions.
+
+      Internal documents show Kessler personally modified routing logic used by several UAE‑based remittance firms, introducing micro‑delays that enabled fractional siphoning from high‑volume transfers.
+
+      Regulatory filings reveal rapid entity creation, short‑lived subsidiaries, and unusual turnover in compliance staff. Several employees reported being reassigned after questioning discrepancies in ledger reports.
+
+      Additional internal memos reference “routing anomalies” and “temporary liquidity gaps,” suggesting deliberate manipulation of settlement pathways.
+    </div>
+  </aside>
 </section>
 
+<!-- ARTICLE -->
+<section class="article" aria-labelledby="article-title">
+  <h2 id="article-title">The Man, The Empire, The Vanishing</h2>
 
-
-
-<section class="article">
-  <h2>The Man, The Empire, The Vanishing</h2>
-
-  <div class="article-img" style="background-image:url('kessler-1.png');"></div>
+  <!-- FIRST image (kessler-1) kept at original size -->
+  <div class="article-img-first" style="background-image:url('assets/kessler-1.jpg');" role="img" aria-label="Kessler portrait"></div>
 
   <p>
     When investigators began reconstructing the financial misconduct tied to Shlomi Kessler, one pattern emerged
@@ -456,8 +433,8 @@ document.addEventListener("DOMContentLoaded", () => {
     processing that allowed him to divert fractional amounts from high‑volume transfers into wallets he controlled.
   </p>
 
-  <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
-    <p style="flex:1;">
+  <div style="display:flex; gap:40px; align-items:center; margin:40px 0; flex-wrap:wrap;">
+    <p style="flex:1; min-width:320px;">
       A former systems analyst, who spoke under condition of anonymity, provided investigators with a screenshot
       of the altered routing table. The screenshot showed a secondary path labeled <em>“MGH‑Temp‑Route‑03”</em>,
       which did not appear in any official documentation. The analyst claims Kessler insisted the path was part of
@@ -465,8 +442,11 @@ document.addEventListener("DOMContentLoaded", () => {
       offshore entities in Cyprus and Malta. The amounts diverted were minuscule — fractions of a dirham — but
       multiplied across millions of transactions, they formed the foundation of a much larger scheme.
     </p>
-    <img src="GRAPHIC-TECH-DIAGRAM.png"
-         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+
+    <!-- subsequent images increased ~70% -->
+    <img src="assets/graphic-tech-diagram.png"
+         alt="Technical diagram"
+         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -485,10 +465,11 @@ document.addEventListener("DOMContentLoaded", () => {
     before landing in wallets tied to Kessler’s inner circle.
   </p>
 
-  <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
-    <img src="GRAPHIC-REDACTED-DOC.png"
-         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
-    <p style="flex:1;">
+  <div style="display:flex; gap:40px; align-items:center; margin:40px 0; flex-wrap:wrap;">
+    <img src="assets/graphic-redacted-doc.png"
+         alt="Redacted document"
+         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+    <p style="flex:1; min-width:320px;">
       The audit’s findings were immediately sealed. The compliance firm that conducted it dissolved two weeks later.
       Investigators recovered fragments of the report, including a page showing a redacted section titled
       <em>“Unexplained Outflows — Priority Review.”</em> The surviving text referenced “non‑standard routing behavior”
@@ -515,16 +496,18 @@ document.addEventListener("DOMContentLoaded", () => {
     case with a biometric lock.
   </p>
 
-  <div style="display:flex; gap:40px; align-items:center; margin:40px 0;">
-    <p style="flex:1;">
+  <div style="display:flex; gap:40px; align-items:center; margin:40px 0; flex-wrap:wrap;">
+    <p style="flex:1; min-width:320px;">
       Within days, Kessler Corp wiped several servers, dissolved three subsidiaries, and terminated dozens of
       employees. The remaining staff received a single internal memo: <em>“Strategic restructuring in progress.
       All inquiries suspended.”</em> No restructuring ever occurred. The <strong>$150 million</strong> remains
       missing. The offshore accounts used in the siphoning scheme were closed, and the nominee directors vanished.
       The wallets tied to Kessler’s inner circle have been dormant since March 2026.
     </p>
-    <img src="GRAPHIC-MONEY-FLOW.png"
-         style="flex:0 0 260px; height:160px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+
+    <img src="assets/graphic-money-flow.png"
+         alt="Money flow diagram"
+         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -542,11 +525,137 @@ document.addEventListener("DOMContentLoaded", () => {
   </p>
 </section>
 
-<div class="kc-logo">KC</div>
+<div class="kc-logo" aria-hidden="true">KC</div>
 
 <footer>
   © 2026 The Global Desk Investigations — Interactive Research Hub
 </footer>
 
+<!-- SCRIPT: panel switching + hacker scramble (3s approx) -->
+<script>
+(function(){
+  // Panel elements
+  const panelImage = document.getElementById('panel-image');
+  const panelTitle = document.getElementById('panel-title');
+  const panelText  = document.getElementById('panel-text');
+
+  // Data for each hotspot (includes placeholder filenames you can replace)
+  const panels = {
+    uae: {
+      image: 'assets/panel-uae.jpg',
+      title: 'Dubai Headquarters — Free‑Zone Access',
+      text: `Kessler Corp’s Dubai HQ operated inside DMCC and DIFC free‑zones, giving the company access to prototype settlement APIs normally restricted to vetted financial institutions.
+
+Internal documents show Kessler personally modified routing logic used by several UAE‑based remittance firms, introducing micro‑delays that enabled fractional siphoning from high‑volume transfers.
+
+Regulatory filings reveal rapid entity creation, short‑lived subsidiaries, and unusual turnover in compliance staff. Several employees reported being reassigned after questioning discrepancies in ledger reports.
+
+Additional internal memos reference “routing anomalies” and “temporary liquidity gaps,” suggesting deliberate manipulation of settlement pathways.`
+    },
+    offshore: {
+      image: 'assets/panel-offshore.jpg',
+      title: 'Offshore Network — Cyprus, Malta, Singapore',
+      text: `Meridian Gate Holdings served as the central hub for offshore routing. Accounts were opened under nominee directors with no digital footprint, used for large transfers, then closed within days.
+
+A confidential audit later revealed more than $150 million USD passed through these entities before disappearing.
+
+Investigators recovered fragments of a sealed report referencing “non‑standard routing behavior,” “external wallets not declared in filings,” and “intentional diversion patterns.”`
+    },
+    wallets: {
+      image: 'assets/panel-wallets.jpg',
+      title: 'Wallet Clusters — Automated Micro‑Diversions',
+      text: `Blockchain analysts identified synchronized wallet clusters executing hundreds of transfers in under two minutes.
+
+These clusters interacted with exchanges known for minimal KYC enforcement, suggesting pre‑programmed automation.
+
+Several wallets went dormant immediately after regulators initiated inquiries, indicating coordinated shutdown.
+
+One cluster executed 418 transfers in under 90 seconds, a pattern consistent with automated laundering scripts.`
+    },
+    disappearance: {
+      image: 'assets/panel-disappearance.jpg',
+      title: 'Abu Dhabi Meeting — Final Sighting',
+      text: `Witnesses describe Kessler as tense and accompanied by two unidentified men, one carrying a biometric‑locked case.
+
+Security footage shows Kessler entering a black SUV with diplomatic plates. The vehicle was tracked toward Al Maktoum International Airport but never logged as arriving.
+
+Within days, Kessler Corp wiped servers, dissolved subsidiaries, and terminated staff. Kessler has not been seen since.`
+    },
+    iran: {
+      image: 'assets/panel-iran.jpg',
+      title: 'Iran Routing Link — Early Experiments',
+      text: `Early routing experiments tied to a Tehran‑linked logistics firm appear to have informed the micro‑delay techniques later deployed inside UAE settlement APIs.
+
+Internal notes reference “legacy routing modules” and “external latency tests.”
+
+Several prototype scripts recovered from this period resemble early versions of the siphoning algorithm.`
+    },
+    israel: {
+      image: 'assets/panel-israel.jpg',
+      title: 'Israel Tech Footprint — Encryption Work',
+      text: `Before arriving in Dubai, Kessler contributed to encryption modules and routing optimizations for a Tel Aviv cybersecurity firm.
+
+Former colleagues recall a young engineer who “saw patterns in network traffic no one else noticed.”
+
+Several techniques used in Kessler Corp’s infrastructure resemble early prototypes developed during this period.`
+    }
+  };
+
+  // Hacker scramble: fast, ~3 seconds total for typical text lengths
+  function hackerScramble(targetEl, newText){
+    const chars = "!<>-_\\/[]{}—=+*^?#0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const oldText = targetEl.innerText || "";
+    const maxLen = Math.max(oldText.length, newText.length);
+    let frame = 0;
+    const totalFrames = Math.ceil((3000) / 30); // ~3 seconds at 30ms interval
+    const interval = setInterval(() => {
+      const progress = frame / totalFrames;
+      const revealCount = Math.floor(progress * maxLen);
+      let out = '';
+      for(let i=0;i<maxLen;i++){
+        if(i < revealCount){
+          out += newText[i] || '';
+        } else {
+          out += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+      targetEl.innerText = out;
+      frame++;
+      if(frame > totalFrames){
+        clearInterval(interval);
+        targetEl.innerText = newText;
+      }
+    }, 30);
+  }
+
+  // Update panel content (image filename, title, text)
+  function updatePanel(key){
+    const p = panels[key];
+    if(!p) return;
+    // update image placeholder background
+    panelImage.style.backgroundImage = `url('${p.image}')`;
+    panelImage.textContent = ''; // remove filename text when image set
+    // scramble title and text
+    hackerScramble(panelTitle, p.title);
+    hackerScramble(panelText, p.text);
+  }
+
+  // Attach events to hotspots
+  document.querySelectorAll('.hotspot').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const key = el.dataset.key;
+      updatePanel(key);
+    });
+    el.addEventListener('click', () => {
+      const key = el.dataset.key;
+      updatePanel(key);
+    });
+  });
+
+  // Initialize default panel
+  updatePanel('uae');
+
+})();
+</script>
 </body>
 </html>
