@@ -82,7 +82,7 @@
     position:absolute;
     inset:0;
     background:
-      url('assets/world-map-hero.jpg') center/cover no-repeat,
+      url('assets/map.png') center/cover no-repeat,
       radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), transparent 40%);
     filter:brightness(.45) contrast(.9);
     z-index:0;
@@ -154,7 +154,7 @@
     width:100%;
     height:100%;
     background:
-      url('assets/world-map-large.jpg') center/cover no-repeat;
+      url('assets/map.png') center/cover no-repeat;
     filter:brightness(.35) contrast(.9);
   }
 
@@ -261,10 +261,10 @@
     margin:40px 0;
   }
 
-  /* Subsequent article images increased ~70% */
-  .article-img-large{
+  /* Subsequent article images reduced by 400px from previous large size (650 - 400 = 250) */
+  .article-img-subsequent{
     width:100%;
-    height:650px; /* ~70% larger */
+    height:250px; /* reduced height */
     background:#111 center/cover no-repeat;
     border-radius:10px;
     margin:40px 0;
@@ -297,7 +297,7 @@
     .map-stage{grid-template-columns:1fr}
     .info-panel-fixed{position:relative; top:auto; height:auto}
     .sticky-map{position:relative; height:56vh}
-    .article-img-large, .article-img-first{height:auto}
+    .article-img-subsequent, .article-img-first{height:auto}
   }
 </style>
 </head>
@@ -443,10 +443,10 @@
       multiplied across millions of transactions, they formed the foundation of a much larger scheme.
     </p>
 
-    <!-- subsequent images increased ~70% -->
+    <!-- subsequent images reduced by 400px (now 250px height) -->
     <img src="assets/graphic-tech-diagram.png"
          alt="Technical diagram"
-         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 420px; height:250px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -468,7 +468,7 @@
   <div style="display:flex; gap:40px; align-items:center; margin:40px 0; flex-wrap:wrap;">
     <img src="assets/graphic-redacted-doc.png"
          alt="Redacted document"
-         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 420px; height:250px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
     <p style="flex:1; min-width:320px;">
       The audit’s findings were immediately sealed. The compliance firm that conducted it dissolved two weeks later.
       Investigators recovered fragments of the report, including a page showing a redacted section titled
@@ -507,7 +507,7 @@
 
     <img src="assets/graphic-money-flow.png"
          alt="Money flow diagram"
-         style="flex:0 0 420px; height:650px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
+         style="flex:0 0 420px; height:250px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); object-fit:cover;">
   </div>
 
   <p>
@@ -531,7 +531,7 @@
   © 2026 The Global Desk Investigations — Interactive Research Hub
 </footer>
 
-<!-- SCRIPT: panel switching + hacker scramble (3s approx) -->
+<!-- SCRIPT: panel switching + hacker scramble (1s approx) -->
 <script>
 (function(){
   // Panel elements
@@ -601,13 +601,13 @@ Several techniques used in Kessler Corp’s infrastructure resemble early protot
     }
   };
 
-  // Hacker scramble: fast, ~3 seconds total for typical text lengths
+  // Hacker scramble: very fast, ~1 second total
   function hackerScramble(targetEl, newText){
     const chars = "!<>-_\\/[]{}—=+*^?#0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     const oldText = targetEl.innerText || "";
     const maxLen = Math.max(oldText.length, newText.length);
     let frame = 0;
-    const totalFrames = Math.ceil((1000) / 10); // ~3 seconds at 30ms interval
+    const totalFrames = Math.ceil(1000 / 30); // ~1 second at 30ms interval
     const interval = setInterval(() => {
       const progress = frame / totalFrames;
       const revealCount = Math.floor(progress * maxLen);
@@ -632,10 +632,10 @@ Several techniques used in Kessler Corp’s infrastructure resemble early protot
   function updatePanel(key){
     const p = panels[key];
     if(!p) return;
-    // update image placeholder background
+    // update image placeholder background (png/jpg filenames used)
     panelImage.style.backgroundImage = `url('${p.image}')`;
     panelImage.textContent = ''; // remove filename text when image set
-    // scramble title and text
+    // scramble title and text (1 second)
     hackerScramble(panelTitle, p.title);
     hackerScramble(panelText, p.text);
   }
