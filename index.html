@@ -10,7 +10,6 @@
   :root{
     --bg:#050507;
     --panel: rgba(255,255,255,0.04);
-    --panel-strong: rgba(255,255,255,0.08);
     --accent:#b30000;
     --muted:#bdbdbd;
     --glass-blur:10px;
@@ -27,7 +26,7 @@
 
   a{color:inherit;text-decoration:none}
 
-  /* MOVING RANDOM LINES BACKGROUND */
+  /* RANDOM MOVING LINES BACKGROUND */
   .lines-layer{
     position:fixed;
     inset:0;
@@ -37,25 +36,29 @@
   }
   .line{
     position:absolute;
-    width:1px;
-    height:180px;
-    background:linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0));
-    opacity:0.25;
-    animation:lineMove 18s linear infinite;
+    width:2px;
+    height:220px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0));
+    opacity:0.35;
+    animation:drift 20s linear infinite;
   }
-  .line:nth-child(2){height:220px; left:15%; animation-duration:22s; animation-delay:-4s;}
-  .line:nth-child(3){height:260px; left:32%; animation-duration:26s; animation-delay:-8s;}
-  .line:nth-child(4){height:200px; left:48%; animation-duration:20s; animation-delay:-2s;}
-  .line:nth-child(5){height:240px; left:63%; animation-duration:24s; animation-delay:-10s;}
-  .line:nth-child(6){height:210px; left:78%; animation-duration:21s; animation-delay:-6s;}
-  .line:nth-child(7){height:230px; left:90%; animation-duration:23s; animation-delay:-12s;}
+  .line:nth-child(1){left:8%; top:-200px; animation-duration:22s;}
+  .line:nth-child(2){left:22%; top:-260px; animation-duration:24s; animation-delay:-4s;}
+  .line:nth-child(3){left:37%; top:-230px; animation-duration:26s; animation-delay:-8s;}
+  .line:nth-child(4){left:51%; top:-210px; animation-duration:21s; animation-delay:-2s;}
+  .line:nth-child(5){left:66%; top:-250px; animation-duration:25s; animation-delay:-10s;}
+  .line:nth-child(6){left:79%; top:-220px; animation-duration:23s; animation-delay:-6s;}
+  .line:nth-child(7){left:92%; top:-240px; animation-duration:27s; animation-delay:-12s;}
+  .line:nth-child(8){left:15%; top:-260px; animation-duration:19s; animation-delay:-5s;}
+  .line:nth-child(9){left:44%; top:-240px; animation-duration:28s; animation-delay:-9s;}
+  .line:nth-child(10){left:73%; top:-230px; animation-duration:20s; animation-delay:-3s;}
 
-  @keyframes lineMove{
-    0%{top:-260px; transform:translateX(0);}
-    25%{transform:translateX(-8px);}
-    50%{transform:translateX(6px);}
-    75%{transform:translateX(-4px);}
-    100%{top:110%; transform:translateX(0);}
+  @keyframes drift{
+    0%{transform:translate(0, -260px);}
+    25%{transform:translate(-12px, -120px);}
+    50%{transform:translate(10px, 40px);}
+    75%{transform:translate(-6px, 180px);}
+    100%{transform:translate(0, 120vh);}
   }
 
   .return {
@@ -148,6 +151,8 @@
     line-height:1.02;
     color:#fff;
     margin-bottom:12px;
+  }
+  .title span.name{
     transition:opacity .4s ease;
   }
 
@@ -200,9 +205,18 @@
     box-shadow:0 6px 18px rgba(179,0,0,0.25), 0 0 0 6px rgba(179,0,0,0.06);
     transform:translate(-50%,-50%);
     cursor:pointer;
-    transition:transform .25s ease;
+    transition:transform .25s ease, background .25s ease;
   }
-  .hotspot:hover{transform:translate(-50%,-50%) scale(1.1)}
+  .hotspot:hover{transform:translate(-50%,-50%) scale(1.15);background:#ff3b3b;}
+
+  .hotspot-label{
+    position:absolute;
+    transform:translate(-50%, -140%);
+    font-size:11px;
+    color:#ddd;
+    text-shadow:0 1px 3px rgba(0,0,0,0.7);
+    white-space:nowrap;
+  }
 
   .info-panel {
     background:var(--panel);
@@ -282,20 +296,22 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const title = document.querySelector(".title");
+  const nameSpan = document.querySelector(".title .name");
   window.addEventListener("scroll", () => {
     const sc = window.scrollY;
     const fadeStart = 40;
     const fadeEnd = 260;
     const t = Math.min(Math.max((sc - fadeStart) / (fadeEnd - fadeStart), 0), 1);
-    title.style.opacity = String(1 - t);
+    nameSpan.style.opacity = String(1 - t);
   });
 
   const panels = {
     uae: document.getElementById("panel-uae"),
-    wallets: document.getElementById("panel-wallets"),
     offshore: document.getElementById("panel-offshore"),
-    disappearance: document.getElementById("panel-disappearance")
+    wallets: document.getElementById("panel-wallets"),
+    disappearance: document.getElementById("panel-disappearance"),
+    iran: document.getElementById("panel-iran"),
+    israel: document.getElementById("panel-israel")
   };
 
   function showPanel(key){
@@ -305,6 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".hotspot").forEach(h => {
     h.addEventListener("mouseenter", () => showPanel(h.dataset.key));
+    h.addEventListener("click", () => showPanel(h.dataset.key));
   });
 
   showPanel("uae");
@@ -315,7 +332,10 @@ document.addEventListener("DOMContentLoaded", () => {
 <body>
 
 <div class="lines-layer">
-  <div class="line" style="left:5%;"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
   <div class="line"></div>
   <div class="line"></div>
   <div class="line"></div>
@@ -332,7 +352,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <div class="hero-inner">
     <div class="eyebrow">Deep Dive Investigation</div>
-    <h1 class="title">The Crypto Trail: The Rise and Disappearance of Shlomi Kessler</h1>
+    <h1 class="title">
+      The Crypto Trail: The Rise and Disappearance of
+      <span class="name"> Shlomi Kessler</span>
+    </h1>
     <p class="lead">
       An immersive investigation into the man who built a digital empire inside the UAE’s free‑zone ecosystem,
       siphoned millions through cross‑border settlement channels, and vanished as regulators closed in.
@@ -344,11 +367,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <div class="sticky-map">
     <div class="world-map">
+      <!-- UAE HQ -->
       <div class="hotspot" style="left:72%; top:58%;" data-key="uae"></div>
+      <div class="hotspot-label" style="left:72%; top:58%;">Dubai HQ</div>
+
+      <!-- Offshore network (Cyprus/Malta/Singapore) -->
       <div class="hotspot" style="left:60%; top:46%;" data-key="offshore"></div>
+      <div class="hotspot-label" style="left:60%; top:46%;">Offshore Network</div>
+
+      <!-- Wallet clusters -->
       <div class="hotspot" style="left:92%; top:74%;" data-key="wallets"></div>
-      <div class="hotspot" style="left:70%; top:62%;" data-key="uae"></div>
-      <div class="hotspot" style="left:58%; top:40%;" data-key="offshore"></div>
+      <div class="hotspot-label" style="left:92%; top:74%;">Wallet Clusters</div>
+
+      <!-- Abu Dhabi disappearance -->
+      <div class="hotspot" style="left:70%; top:62%;" data-key="disappearance"></div>
+      <div class="hotspot-label" style="left:70%; top:62%;">Abu Dhabi Meeting</div>
+
+      <!-- Iran logistics / routing link -->
+      <div class="hotspot" style="left:66%; top:40%;" data-key="iran"></div>
+      <div class="hotspot-label" style="left:66%; top:40%;">Iran Routing Link</div>
+
+      <!-- Israel early tech footprint -->
+      <div class="hotspot" style="left:68%; top:36%;" data-key="israel"></div>
+      <div class="hotspot-label" style="left:68%; top:36%;">Israel Tech Footprint</div>
     </div>
   </div>
 
@@ -357,17 +398,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <h3>Kessler Corp — UAE Headquarters</h3>
       <p>
         Founded in Dubai in 2020, Kessler Corp rapidly embedded itself in free‑zone fintech programs, gaining access
-        to prototype settlement APIs and cross‑border routing infrastructure. Corporate filings show a dense network
-        of entities registered in DIFC, DMCC, and Ras Al Khaimah.
-      </p>
-    </div>
-
-    <div class="info-panel" id="panel-wallets">
-      <h3>Wallet Network & Irregular Transfers</h3>
-      <p>
-        Analysts identified wallet clusters exhibiting circular transfers, micro‑diversions from high‑volume
-        remittance flows, and interactions with exchanges known for minimal KYC enforcement. Several wallets
-        correlate with offshore accounts later closed without explanation.
+        to prototype settlement APIs and cross‑border routing infrastructure. Corporate filings show entities in DIFC,
+        DMCC, and Ras Al Khaimah, all tied to high‑volume remittance flows. Internal emails suggest Kessler personally
+        oversaw changes to routing logic used by several UAE‑based firms.
       </p>
     </div>
 
@@ -375,16 +408,49 @@ document.addEventListener("DOMContentLoaded", () => {
       <h3>Offshore Entities & Nominee Directors</h3>
       <p>
         Subsidiaries in Cyprus, Malta, and Singapore were short‑lived and often used nominee directors with no
-        digital footprint. Many of these entities existed for weeks, processed large transfers, then dissolved.
+        digital footprint. Accounts were opened, used to process large transfers, then closed within days. A
+        confidential audit later showed that more than <strong>$150 million USD</strong> passed through these
+        entities before disappearing into wallet clusters linked to Kessler’s inner circle.
+      </p>
+    </div>
+
+    <div class="info-panel" id="panel-wallets">
+      <h3>Wallet Network & Irregular Transfers</h3>
+      <p>
+        Blockchain analysts identified wallet clusters exhibiting circular transfers, micro‑diversions from
+        high‑volume remittance flows, and interactions with exchanges known for minimal KYC enforcement. One
+        cluster executed hundreds of transfers in under two minutes, suggesting pre‑programmed coordination.
+        Several wallets went dormant immediately after regulators initiated inquiries.
       </p>
     </div>
 
     <div class="info-panel" id="panel-disappearance">
-      <h3>The Disappearance</h3>
+      <h3>The Abu Dhabi Meeting & Disappearance</h3>
       <p>
-        After a private meeting in Abu Dhabi in early 2026, Kessler vanished from public view. Corporate filings
-        ceased, wallet activity dropped to zero, and several subsidiaries dissolved quietly. Regulators have open
-        inquiries, but no charges have been filed.
+        In early 2026, Kessler attended a private meeting in Abu Dhabi. Witnesses describe him as tense and
+        accompanied by two unidentified men, one carrying a biometric‑locked case. Security footage later shows
+        Kessler entering a black SUV with diplomatic plates. The vehicle was tracked toward Al Maktoum International
+        Airport but never officially logged as arriving. Kessler has not been seen since.
+      </p>
+    </div>
+
+    <div class="info-panel" id="panel-iran">
+      <h3>Iran Logistics & Routing Link</h3>
+      <p>
+        Investigators traced early routing experiments to a logistics contract involving a Tehran‑linked firm.
+        While no direct sanctions violations were confirmed, internal documents reference “legacy routing modules”
+        and “external latency tests” tied to regional freight corridors. These experiments appear to have informed
+        the micro‑delay techniques later used inside UAE settlement APIs.
+      </p>
+    </div>
+
+    <div class="info-panel" id="panel-israel">
+      <h3>Israel Tech Footprint & Early Work</h3>
+      <p>
+        Before arriving in Dubai, Kessler briefly worked as a remote systems consultant for a Tel Aviv‑based
+        cybersecurity company. Former colleagues recall a young engineer who “saw patterns in network traffic
+        no one else noticed.” Internal logs show he contributed to encryption modules and routing optimizations
+        that resemble the techniques later deployed inside Kessler Corp’s infrastructure.
       </p>
     </div>
   </div>
